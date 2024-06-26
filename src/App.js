@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { PostProvider, usePosts } from "./PostContext";
+import { FakeDarkContext, useFake } from "./FakeDarkContext";
+import Button from "./Button";
+import Test from "./Test";
 
 function createRandomPost() {
   return {
@@ -10,25 +13,13 @@ function createRandomPost() {
 }
 
 function App() {
-  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
-  const [isFakeDark, setIsFakeDark] = useState(false);
-
-  useEffect(
-    function () {
-      document.documentElement.classList.toggle("fake-dark-mode");
-    },
-    [isFakeDark]
-  );
-
+  // console.log(useFake());
   return (
     // 2) PROVIDE VALUE TO CHILD COMPONENTS
     <section>
-      <button
-        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-        className="btn-fake-dark-mode"
-      >
-        {isFakeDark ? "☀️" : "🌙"}
-      </button>
+      <FakeDarkContext>
+        <Button />
+      </FakeDarkContext>
 
       <PostProvider>
         <Header />
@@ -125,14 +116,17 @@ function FormAddPost() {
 function List() {
   const { posts } = usePosts();
   return (
-    <ul>
-      {posts.map((post, i) => (
-        <li key={i}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {posts.map((post, i) => (
+          <li key={i}>
+            <h3>{post.title}</h3>
+            <p>{post.body}</p>
+          </li>
+        ))}
+      </ul>
+      {/* <Test /> */}
+    </>
   );
 }
 
